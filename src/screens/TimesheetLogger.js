@@ -16,10 +16,12 @@ import CustomPicker from '../components/CustomPicker';
 import styles from '../components/style';
 import CustomInput from '../components/CustomInput';
 import AsyncStorage from '@react-native-community/async-storage';
+import Modal from 'react-native-modal';
 
 const TimesheetLogger = ({navigation}) => {
   const [logDate, setLogDate] = useState(toDate(new Date(), 'P'));
 
+  const [showModal, setShowModal] = useState(false);
   const [logType, setLogType] = useState(0);
   const [project, setProject] = useState(0);
   const [workType, setWorkType] = useState(0);
@@ -207,6 +209,7 @@ const TimesheetLogger = ({navigation}) => {
         <View style={[styles.postionCenter]}>
           <CustomButton
             name="Submit"
+            style={{padding: 10}}
             loading={submitting}
             onPress={() => {
               loggerFunction({
@@ -221,8 +224,40 @@ const TimesheetLogger = ({navigation}) => {
               });
             }}
           />
+          <CustomButton
+            name="Log More"
+            style={{padding: 10}}
+            onPress={() => {
+              setShowModal(true);
+            }}
+          />
         </View>
       </View>
+      <Modal isVisible={showModal}>
+        <View
+          style={{
+            flex: 1,
+            maxHeight: 200,
+            padding: 10,
+            backgroundColor: '#fff',
+            borderRadius: 10,
+          }}>
+          <Image
+            source={require('../assets/comingsoon.gif')}
+            style={{
+              width: 200,
+              height: 100,
+              alignSelf: 'center',
+            }}
+          />
+          <CustomButton
+            name="close"
+            onPress={() => {
+              setShowModal(false);
+            }}
+          />
+        </View>
+      </Modal>
     </ImageBackground>
   );
 };
